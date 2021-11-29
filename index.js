@@ -226,22 +226,22 @@ app.post ('/users', (req,res) =>{
 // Allows user to update username
 app.put('/users/:name', (req, res) => {
   let user = users.find((user) => { return user.name === req.params.name });
-  res.status(201).send(`Username was updated to ${req.params.name}`);
+  res.status(200).send(`Username was updated to ${req.params.name}`);
 });
 
 // Allows user to add movie to favorites 
 app.put('/users/:name/favorites/:movieTitle', (req, res) => {
-  res.status(201).send(`${req.params.movieTitle} was added to ${req.params.name}'s favorites.`);
+  res.status(200).send(`${req.params.movieTitle} was added to ${req.params.name}'s favorites.`);
 });
 
 // Allows user to delete movie from favorites
 app.delete('/users/:name/favorites/:movieTitle', (req, res) => {
-  res.status(201).send(`${req.params.movieTitle} was removed from ${req.params.name}'s favorites.`);
+  res.status(200).send(`${req.params.movieTitle} was removed from ${req.params.name}'s favorites.`);
 });
 
 // Deletes user by username 
 app.delete ('/users/:name', (req,res) =>{
-  res.status(201).send(`User ${req.params.name} was deleted.`);
+  res.status(200).send(`User ${req.params.name} was deleted.`);
 });
 
 // Error handler
