@@ -3,34 +3,18 @@ const express = require("express"),
   morgan = require("morgan"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
-  Models = require("./models.js"),
+  Models = require("./models.js");
 
 const Movies = Models.Movie,
   Users = Models.User;
-
+  
+// Express function declared as variable 'app'
+const app = express();
 const { check, validationResult } = require('express-validator');
 
 const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
-
-// Mongoose connection to database for CRUD operations
-/* Local host 
- mongoose.connect('mongodb://localhost:27017/myFlixDB', {
-   useNewUrlParser: true,
-   useUnifiedTopology: true,
- });*/
- mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-// Express function declared as variable 'app'
-const app = express();
-
-//Middleware to...
-app.use(express.static("public")); // serve static files
-app.use(express.urlencoded({extended: true})); // encoded express
-app.use(morgan("common")); // log requests to terminal
-app.use(bodyParser.json()); // use body-parser
-app.use(bodyParser.urlencoded({ extended: true })); // use body-parser encoded 
 app.use(cors({
   origin: (origin, callback) => {
     if(!origin) return callback(null, true);
@@ -40,7 +24,23 @@ app.use(cors({
     }
     return callback(null, true);
   }
-})); // use CORS 
+})); // use CORS
+
+// Mongoose connection to database for CRUD operations
+//For local host 
+/*mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+   useNewUrlParser: true,
+   useUnifiedTopology: true,
+ });*/
+ //For online host
+ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+//Middleware to...
+app.use(express.static("public")); // serve static files
+app.use(express.urlencoded({extended: true})); // encoded express
+app.use(morgan("common")); // log requests to terminal
+app.use(bodyParser.json()); // use body-parser
+app.use(bodyParser.urlencoded({ extended: true })); // use body-parser encoded  
 let auth = require('./auth')(app); // auth.js file to use express
 
 const passport = require('passport');
