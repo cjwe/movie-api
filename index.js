@@ -4,7 +4,6 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
   Models = require("./models.js"),
-  bcrypt = require('bcrypt');
 
 const Movies = Models.Movie,
   Users = Models.User;
