@@ -33,7 +33,8 @@ app.use(express.static('public')); // serve static files
 app.use(morgan('common')); // log requests to terminal
 app.use(bodyParser.json()); // use body-parser
 app.use(bodyParser.urlencoded({ extended: true })); // use body-parser encoded
-app.use(passport.initialize()); // use passport
+app.use(passport.initialize());
+require('./passport'); // use and require passport
 
 // Use CORS
 const cors = require('cors');
