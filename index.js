@@ -3,7 +3,6 @@ const express = require('express'),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
-  passport = require('./passport.js'),
   Models = require('./models.js');
 
 // Models
@@ -33,8 +32,6 @@ app.use(express.static('public')); // serve static files
 app.use(morgan('common')); // log requests to terminal
 app.use(bodyParser.json()); // use body-parser
 app.use(bodyParser.urlencoded({ extended: true })); // use body-parser encoded
-app.use(passport.initialize());
-require('./passport'); // use and require passport
 
 // Use CORS
 const cors = require('cors');
@@ -59,6 +56,9 @@ app.use(
 
 // Import auth endpoints
 let auth = require('./auth')(app);
+
+const passport = require('passport');
+require('./passport');
 
 // GET requests
 // Get home page
