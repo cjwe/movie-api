@@ -13,10 +13,12 @@ const Movies = Models.Movie,
 const { check, validationResult } = require('express-validator');
 
 // Mongoose connection to database for CRUD operations
-mongoose.connect("mongodb://localhost:27017/myFlixDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+/* Local host 
+ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+   useNewUrlParser: true,
+   useUnifiedTopology: true,
+ });*/
+ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Express function declared as variable 'app'
 const app = express();
