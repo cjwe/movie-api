@@ -17,137 +17,15 @@ mongoose.connect("mongodb://localhost:27017/myFlixDB", {
 // Express function declared as variable 'app'
 const app = express();
 
-// JSON movie data objects
-// let movies = [
-//   {
-//     title: "The Castle of Cagliostro",
-//     director: "Hayao Miyazaki",
-//     year: "1979",
-//     producer: "Tetsuo Katayama",
-//     starring: [
-//       "Yasuo Yamada",
-//       "Eiko Masuyama",
-//       "Kiyoshi Kobayashi",
-//       "Makio Inoue",
-//       "Gorō Naya",
-//     ],
-//     music: "Yuji Ohno",
-//   },
-//   {
-//     title: "Nausicaä of the Valley of the Wind",
-//     director: "Hayao Miyazaki",
-//     year: "1984",
-//     producer: "Isao Takahata",
-//     starring: [
-//       "Sumi Shimamoto",
-//       "Gorō Naya",
-//       "Yōji Matsuda",
-//       "Yoshiko Sakakibara",
-//       "Iemasa Kayumi",
-//     ],
-//     music: "Joe Hisaishi",
-//   },
-//   {
-//     title: "Castle in the Sky",
-//     director: "Hayao Miyazaki",
-//     year: "1986",
-//     producer: "Isao Takahata",
-//     starring: [
-//       "Mayumi Tanaka",
-//       "Keiko Yokozawa",
-//       "Kotoe Hatsui",
-//       "Minori Terada",
-//     ],
-//     music: "Joe Hisaishi",
-//   },
-//   {
-//     title: "My Neighbor Totoro",
-//     director: "Hayao Miyazaki",
-//     year: "1988",
-//     producer: "Toru Hara",
-//     starring: ["Chika Sakamoto", "Noriko Hidaka", "Hitoshi Takagi"],
-//     music: "Joe Hisaishi",
-//   },
-//   {
-//     title: "Kiki's Delivery Service",
-//     director: "Hayao Miyazaki",
-//     year: "1989",
-//     producer: "Hayao Miyazaki",
-//     starring: ["Minami Takayama", "Rei Sakuma", "Kappei Yamaguchi"],
-//     music: "Joe Hisaishi",
-//   },
-//   {
-//     title: "Porco Rosso",
-//     director: "Hayao Miyazaki",
-//     year: "1992",
-//     producer: "Toshio Suzuki",
-//     starring: [
-//       "Shūichirō Moriyama",
-//       "Tokiko Kato",
-//       "Akemi Okamura",
-//       "Akio Ōtsuka",
-//     ],
-//     music: "Joe Hisaishi",
-//   },
-//   {
-//     title: "Princess Mononoke",
-//     director: "Hayao Miyazaki",
-//     year: "1997",
-//     producer: "Toshio Suzuki",
-//     starring: [
-//       "Yōji Matsuda",
-//       "Yuriko Ishida",
-//       "Yūko Tanaka",
-//       "Kaoru Kobayashi",
-//       "Masahiko Nishimura",
-//     ],
-//     music: "Joe Hisaishi",
-//   },
-//   {
-//     title: "Spirited Away",
-//     director: {
-//       name: "Hayao Miyazaki",
-//       birth: "January 5, 1941",
-//     },
-//     year: "2001",
-//     producer: "Toshio Suzuki",
-//     starring: [
-//       "Rumi Hiiragi",
-//       "Miyu Irino",
-//       "Mari Natsuki",
-//       "Takeshi Naito",
-//       "Yasuko Sawaguchi",
-//     ],
-//     music: "Joe Hisaishi",
-//   },
-//   {
-//     title: "Howl's Moving Castle",
-//     director: "Hayao Miyazaki",
-//     year: "2004",
-//     producer: "Toshio Suzuki",
-//     starring: ["Chieko Baisho", "Takuya Kimura", "Akihiro Miwa"],
-//     music: "Joe Hisaishi",
-//   },
-//   {
-//     title: "Ponyo",
-//     director: "Hayao Miyazaki",
-//     year: "2008",
-//     producer: "Toshio Suzuki",
-//     starring: [
-//       "Tomoko Yamaguchi",
-//       "Kazushige Nagashima",
-//       "Yūki Amami",
-//       "George Tokoro",
-//       "Yuria Nara",
-//     ],
-//     music: "Joe Hisaishi",
-//   },
-// ];
-
 //Middleware to...
 app.use(express.static("public")); // serve static files
 app.use(morgan("common")); // log requests to terminal
 app.use(bodyParser.json()); // use body-parser
+app.use(bodyParser.urlencoded({ extended: true })); // use body-parser encoded 
+let auth = require('./auth')(app); // auth.js file use express
+
+const passport = require('passport');
+require('./passport');
 
 // GET requests
 // Get home page
@@ -163,7 +41,7 @@ app.get("/documentation", (req, res) => {
 });
 
 // Get complete movie list
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -175,7 +53,7 @@ app.get('/movies', (req, res) => {
 });
 
 // Get movie by title
-app.get('/movies/:Title', (req, res) => {
+app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ Title: req.params.Title })
     .then((movie) => {
       res.status(201).json(movie);
@@ -187,7 +65,7 @@ app.get('/movies/:Title', (req, res) => {
 });
 
 // Get genre by name
-app.get('/movies/genre/:name', (req, res) => {
+app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Genre.Name' : req.params.name })
     .then((genre) => {
       res.status(201).json(genre)
@@ -199,7 +77,7 @@ app.get('/movies/genre/:name', (req, res) => {
 });
 
 // Get director data by name
-app.get('/movies/directors/:Name', (req, res) => {
+app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Director.Name' : req.params.Name })
     .then((director) => {
       res.status(201).json(director)
@@ -211,7 +89,7 @@ app.get('/movies/directors/:Name', (req, res) => {
 });
 
 // Get user by username 
-app.get('/users/:Username', (req, res) => {
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
@@ -251,7 +129,7 @@ app.post("/users", (req, res) => {
 });
 
 // Allows user to update info by username
-app.put('/users/:Username', (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
     {
       Username: req.body.Username,
@@ -272,7 +150,7 @@ app.put('/users/:Username', (req, res) => {
 });
 
 // Allows user to add movie to favorites
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { FavoriteMovies: req.params.MovieID }
    },
@@ -288,7 +166,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 // Allows user to delete movie from favorites
-app.delete("/users/:Username/movies/:MovieID", (req, res) => {
+app.delete("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $pull: { FavoriteMovies: req.params.MovieID }
   },
@@ -304,7 +182,7 @@ app.delete("/users/:Username/movies/:MovieID", (req, res) => {
 });
 
 // Delete a user by username
-app.delete('/users/:Username', (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
