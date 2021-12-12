@@ -26,25 +26,18 @@ mongoose.connect(process.env.CONNECTION_URI, {
 // Express function declared as variable 'app'
 const app = express();
 
-//Middleware to...
-app.use(express.static('public')); // serve static files
-// app.use(express.urlencoded({extended: true})); // encoded express
-app.use(morgan('common')); // log requests to terminal
-app.use(bodyParser.json()); // use body-parser
-app.use(bodyParser.urlencoded({ extended: true })); // use body-parser encoded
-
-// Use CORS
+// Include CORS before auth and middleware
 const cors = require('cors');
 app.use(cors());
 // Define allowed origins
-const allowedOrigins = ['http://localhost:1234', 'https://testsite.com'];
+let allowedOrigins = ['http://localhost:1234', 'https://testsite.com'];
 // Call CORS and check origins
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
-        const message =
+        let message =
           'The CORS policy for this application does not allow requests from origin ' +
           origin;
         return callback(new Error(message), false);
@@ -54,9 +47,17 @@ app.use(
   })
 );
 
-// Import auth endpoints
+//Middleware to...
+app.use(express.static('public')); // serve static fiåles
+// app.use(express.urlencoded({extended: true})); // encoded express
+app.use(morgan('common')); // log requests to terminal
+app.use(bodyParser.json()); // use body-parser
+app.use(bodyParser.urlencoded({ extended: true })); // use body-parser encoded
+
+// Import auth endpoints after body parser
 let auth = require('./auth')(app);
 
+// Require passport after auth
 const passport = require('passport');
 require('./passport');
 
