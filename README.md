@@ -7,7 +7,7 @@ Users are able to sign up, update their personal information, and create a list 
 ## Built With
 - JavaScript and HTML
 - MERN (MongoDB, Express, React, and Node.js) stack, REST architecture
-- Deployed to [Heroku](https://www.heroku.com/)
+- Deployed to [Heroku](https://www.heroku.com/), tested with [Postman](https://www.postman.com/)
 
 ## Live Demo
 Check it out [here](https://miyazaki-movie-api.herokuapp.com/).
