@@ -52,6 +52,18 @@ app.get('/documentation', (req, res) => {
   });
 });
 
+// Temp get movie list with no authentication
+app.get('/movies', function (req, res) {
+  Movies.find()
+    .then(function (movies) {
+      res.status(201).json(movies);
+    })
+    .catch(function (error) {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
+/*
 // Get complete movie list
 app.get(
   '/movies',
@@ -67,6 +79,7 @@ app.get(
       });
   }
 );
+*/
 
 // Get movie by title
 app.get(
