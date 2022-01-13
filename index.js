@@ -3,7 +3,6 @@ const express = require('express'),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
-  cors = require('cors'),
   Models = require('./models.js');
 
 // Models
@@ -24,7 +23,27 @@ const app = express();
 
 // Include CORS before auth and middleware
 const cors = require('cors');
-app.use(cors());
+let allowedOrigins = [
+  'http://localhost:8080',
+  'https://miyazaki-movie-api.herokuapp.com/',
+  'http://localhost:1234',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn’t found on the list of allowed origins
+        let message =
+          'The CORS policy for this application doesn’t allow access from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 //Middleware to...
 app.use(express.static('public')); // serve static fiåles
