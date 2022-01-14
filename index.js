@@ -76,18 +76,16 @@ app.get('/documentation', (req, res) => {
 app.get(
   '/movies',
   passport.authenticate('jwt', { session: false }),
-  app.get('/movies', function (req, res) {
-    (req, res) => {
-      Movies.find()
-        .then((movies) => {
-          res.status(201).json(movies);
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).send('Error: ' + err);
-        });
-    };
-  })
+  (req, res) => {
+    Movies.find()
+      .then((movies) => {
+        res.status(201).json(movies);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
 );
 
 // Get movie by title
