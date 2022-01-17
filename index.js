@@ -7,7 +7,9 @@ const express = require('express'),
 
 // Models
 const Movies = Models.Movie,
-  Users = Models.User;
+  Users = Models.User,
+  Genres = Models.Genre,
+  Directors = Models.Director;
 
 const { check, validationResult } = require('express-validator');
 
@@ -104,14 +106,46 @@ app.get(
   }
 );
 
-// Get genre by name
+// Get list of all genres
 app.get(
-  '/movies/genre/:name',
+  '/genres',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    Movies.findOne({ 'Genre.Name': req.params.name })
-      .then((genre) => {
-        res.status(201).json(genre);
+    Genres.find()
+      .then((directors) => {
+        res.status(201).json(directors);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
+
+// Get genre by name
+app.get(
+  '/genres/:Name',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Genres.findOne({ Name: req.params.Name })
+      .then((genres) => {
+        res.status(201).json(genres);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  }
+);
+
+// Get list of all directors
+app.get(
+  '/directors',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Directors.find()
+      .then((directors) => {
+        res.status(201).json(directors);
       })
       .catch((err) => {
         console.error(err);
@@ -122,12 +156,12 @@ app.get(
 
 // Get director data by name
 app.get(
-  '/movies/directors/:Name',
+  '/directors/:Name',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    Movies.findOne({ 'Director.Name': req.params.Name })
+    Directors.findOne({ Name: req.params.Name })
       .then((director) => {
-        res.status(201).json(director);
+        res.json(director);
       })
       .catch((err) => {
         console.error(err);
