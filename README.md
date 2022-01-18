@@ -1,13 +1,21 @@
-# myFlixDB 
+# myFlix Client
 
-This API is the server-side component of a movies web application containing Hayao Miyazaki films. The web application will provide users with access to information about different films, the director, and genres. 
+This single-page, responsive application  (SPA) is the client-side for an application called myFlix based on its existing server-side code (REST API and database). It features  routing, rich interactions, several interface views, and a polished user experience.
 
-Users are able to sign up, update their personal information, and create a list of their favorite movies.
+The frontend for this application consists of one main view that switches between the following subviews:
+- A “login” view
+- A “user registration” view
+- A “single movie” view
+- A “genre” view
+- A “director” view
+- A “profile” view
 
 ## Built With
-- JavaScript and HTML
-- MERN (MongoDB, Express, React, and Node.js) stack, REST architecture
-- Deployed to [Heroku](https://www.heroku.com/), tested with [Postman](https://www.postman.com/)
+- JavaScript,  HTML, SCSS
+- React, React Redux
+- Styled with React Bootstrap
+- Built with Parcel
+- MERN (MongoDB, Express, React, and Node.js) stack
 
 ## Live Demo
-Check it out [here](https://miyazaki-movie-api.herokuapp.com/).
+Check it out [here](/).
