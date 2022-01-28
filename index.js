@@ -29,6 +29,7 @@ let allowedOrigins = [
   'http://localhost:8080',
   'https://miyazaki-movie-api.herokuapp.com/',
   'http://localhost:1234',
+  'https://myghibli.netlify.app',
 ];
 
 app.use(
