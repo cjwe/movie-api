@@ -27,6 +27,7 @@ const app = express();
 const cors = require('cors');
 let allowedOrigins = [
   'http://localhost:8080',
+  'http://localhost:4200/',
   'https://miyazaki-movie-api.herokuapp.com/',
   'http://localhost:1234',
   'https://myghibli.netlify.app',
@@ -276,7 +277,7 @@ app.put(
 
 // Allows user to add movie to favorites
 app.post(
-  '/users/:Username/movies/:MovieID',
+  '/users/:Username/favorites',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
