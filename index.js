@@ -277,7 +277,7 @@ app.put(
 
 // Allows user to add movie to favorites
 app.post(
-  '/users/:Username/favorites',
+  '/users/:Username/movies/:MovieID',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
