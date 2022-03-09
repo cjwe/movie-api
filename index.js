@@ -31,7 +31,7 @@ let allowedOrigins = [
   'http://localhost:1234',
   'https://miyazaki-movie-api.herokuapp.com/',
   'https://myghibli.netlify.app',
-  'https://cjwe.github.io/',
+  'https://cjwe.github.io',
 ];
 
 app.use(
