@@ -8,6 +8,7 @@ Users will be able to sign up, update their personal information, and create a l
 - JavaScript and HTML
 - MERN (MongoDB, Express, React, and Node.js) stack, REST architecture
 - Deployed to [Heroku](https://www.heroku.com/)
+- Documentation generated with [JSDoc](https://jsdoc.app/) 
 
 ## Live Demo
 Check it out [here](https://miyazaki-movie-api.herokuapp.com/).
